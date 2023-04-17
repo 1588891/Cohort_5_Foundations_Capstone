@@ -15,20 +15,22 @@ def check_pw(pt_pass, hashed_pw):
     return bcrypt.checkpw(encoded_pass, hashed_pw)
 
 
-# query = "UPDATE Users SET password = ? WHERE user_id = ?"
-
+query = "UPDATE Users SET password = ? WHERE user_id = ?"
+query = "UPDATE Users SET user_type = 'Manager' WHERE user_id = 1"
+# user_id = input('Which user ID to set password for? ')
 # new_password = input("New Password: ")
 
 # hashed_pw = hash_pw(new_password)
-
+# print(hashed_pw)
 # cursor.execute(query,(hashed_pw, user_id))
-# connection.commit()
+cursor.execute(query)
+connection.commit()
 
-query = "SELECT password FROM Users WHERE user_id = ?"
-user_id = input('Which user ID to check password for? ')
+# query = "SELECT password FROM Users WHERE user_id = ?"
+# user_id = input('Which user ID to check password for? ')
 
-result = cursor.execute(query, (user_id,)).fetchone()
+# result = cursor.execute(query, (user_id,)).fetchone()
 
-password = input("Password: ")
+# password = input("Password: ")
 
-print(check_pw(password, result[0]))
+# print(check_pw(password, result[0]))

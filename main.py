@@ -53,17 +53,17 @@ def create_schema_5():
 def read_only_users():
     query = 'SELECT * FROM Users WHERE active = 1 AND user_type = "User";'
     rows = cursor.execute(query).fetchall()
-    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["password"]:20}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
+    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
     for row in rows:
-        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[5]:20}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
+        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
         print()
 
 def read_only_managers():
     query = 'SELECT * FROM Users WHERE active = 1 AND user_type = "Manager";'
     rows = cursor.execute(query).fetchall()
-    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["password"]:20}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
+    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
     for row in rows:
-        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[5]:20}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
+        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
         print()
 
 def read_all_assessments():
@@ -88,7 +88,6 @@ def read_assessment_results():
 
 
 
-
 def hash_pw(pt_pass):
     salt = bcrypt.gensalt()
     encoded_pass = pt_pass.encode()
@@ -99,34 +98,22 @@ def check_pw(pt_pass, hashed_pw):
     encoded_pass = pt_pass.encode()
     return bcrypt.checkpw(encoded_pass, hashed_pw)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def view_all_users_in_a_list():
     query1 = 'SELECT * FROM Users WHERE active = 1;'
     rows = cursor.execute(query1).fetchall()
-    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["password"]:20}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
+    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
     for row in rows:
-        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[5]:20}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
+        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
         print()
+
+
 
 def search_for_users_by_first_or_last_name(first_name, last_name):
     query1 = 'SELECT * FROM Users WHERE first_name LIKE ? AND last_name LIKE ? AND active = 1;'
     rows = cursor.execute(query1, (first_name, last_name)).fetchall()
-    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["password"]:20}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
+    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
     for row in rows:
-        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[5]:20}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
+        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
         print()
 
 def view_a_report_of_all_users_and_their_competency_levels_for_a_given_competency(assessment_id): # for everyone
@@ -282,9 +269,9 @@ def add_an_assessment_result_for_a_user_for_an_assessment(user_id, assessment_id
 
 
 def edit_a_users_information(changed_items,user_input1):
-    hashed_password = hash_pw(changed_items[4])
-    query3 = 'UPDATE Users SET first_name = ?, last_name = ?, phone = ?, email = ?, password = ?, user_type = ? WHERE user_id = ? AND active = 1;'
-    cursor.execute(query3, (changed_items[0],changed_items[1],changed_items[2],changed_items[3],hashed_password,changed_items[5],user_input1))
+    hashed_password = hash_pw(changed_items[5])
+    query3 = 'UPDATE Users SET first_name = ?, last_name = ?, phone = ?, email = ?, user_type = ?, password = ?  WHERE user_id = ? AND active = 1;'
+    cursor.execute(query3, (changed_items[0],changed_items[1],changed_items[2],changed_items[3],changed_items[4],hashed_password,user_input1))
     #input('Press enter to finish adding submission: ')
     connection.commit() 
     
@@ -294,9 +281,9 @@ def edit_a_competency(changed_comp_items,comp_id_input):
     #input('Press enter to finish adding submission: ')
     connection.commit()
 
-def edit_an_assessment(assessment_id, name):
+def edit_an_assessment(comp_id, name,assessment_id):
     query = 'UPDATE Assessments SET competency_id = ?, name = ? WHERE assessment_id = ? AND active = 1;'
-    cursor.execute(query, (assessment_id, name))
+    cursor.execute(query, (comp_id, name,assessment_id))
     connection.commit()
 
 def edit_an_assessment_result(user_id, assessment_id, assessment_score, manager_id, assessment_result_id):
@@ -353,9 +340,9 @@ def activate_an_assessment(assessment_id):
 def view_my_info(user_id):
     query = 'SELECT * FROM Users WHERE user_id = ?;'
     rows = cursor.execute(query, (user_id)).fetchall()
-    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["password"]:20}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
+    print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
     for row in rows:
-        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[5]:20}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
+        print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
 
 def edit_user_name(user_id, first_name, last_name):
     query = 'UPDATE Users SET first_name = ?, last_name = ? WHERE user_id = ?;' 
@@ -393,6 +380,7 @@ while True:
         user_id = str(row[2])
         # result = cursor.execute(query, (user_id,)).fetchone()
         check_password = check_pw(password, row[0])
+        print(check_password)
         if row[1] == 'Manager' and check_password == True:
             while True:
                 user_input2 = input('''
@@ -453,7 +441,7 @@ while True:
                                     for user_item in user_item_list:
                                         user_input = input(f'{user_item}')
                                         little_user_list.append(user_input)
-                                        print(little_user_list)
+                                        #print(little_user_list)
                                     select_user_type = input('''
     1.) Manager
     2.) User
@@ -464,7 +452,7 @@ while True:
                                     elif select_user_type == '2':
                                         little_user_list.append('User')
                                     big_user_info_list.append(little_user_list)
-                                    print(big_user_info_list)
+                                    #print(big_user_info_list)
                                 elif add_stop_input.lower() == 'q':
                                     for ind in big_user_info_list:
                                         first_name = ''
@@ -488,7 +476,7 @@ while True:
                                             elif variable == 5:
                                                 user_type += item
                                             variable += 1
-                                        print(ind)
+                                        #print(ind)
                                         
                                         add_a_user(first_name, last_name, phone, email, password, date, user_type)  
                                     break
@@ -522,7 +510,7 @@ while True:
                             name2 = 'Summative Assessment'
                             name3 = 'Diagnostic Assessment'
                             query = 'SELECT * FROM Competencies WHERE active = 1;'
-                            rows = cursor.execute(query1).fetchall()
+                            rows = cursor.execute(query).fetchall()
                             print(f'{competency_dictionary["competency_id"]:<15}{competency_dictionary["name"]:30}{competency_dictionary["date_created"]:30}{competency_dictionary["active"]:15}\n')
                             for row in rows:
                                 print(f'{row[0]:<15}{row[1]:30}{row[2]:30}{row[3]:<15}')
@@ -572,15 +560,16 @@ while True:
     Type number here:--->''')
                         if user_input4 == '1':
                             changed_items = []
-                            items_list = ['First Name','Last Name','Phone Number','Email','Password','User Type (User) or (Manager)']
+                            items_list = ['First Name','Last Name','Phone Number','Email','User Type (User) or (Manager)','Password']
                             view_all_users_in_a_list()
                             user_input1 = input('Type User ID to select a User to Edit:--->')
                             for item in items_list:
                                 user_input2 = input(f'Type a new {item} to edit {item} or press Enter to skip:--->')
                                 changed_items.append(user_input2)
-                            query2 = 'SELECT first_name, last_name, phone, email, password, user_type FROM Users WHERE user_id = ?;'
+                            query2 = 'SELECT first_name, last_name, phone, email, user_type, password FROM Users WHERE user_id = ?;'
                             existing_user = cursor.execute(query2, (user_input1,)).fetchone()
                             index = 0
+                            print(changed_items)
                             for new_item in changed_items:
                                 if new_item == '':
                                     changed_items[index] = existing_user[index]
@@ -606,13 +595,15 @@ while True:
                             index = 0
                             for new_comp_item in changed_comp_items:
                                 if new_comp_item == '':
-                                    changed_comp_items[index] = existing_comp[index]
+                                    changed_comp_items[index] = existing_comp[index + 1]
                                     index += 1
                                 else:
                                     index += 1
                             edit_a_competency(changed_comp_items,comp_id_input)
 
                         elif user_input4 == '3':
+                            read_all_assessments()
+                            assessment_id = input('Type Assessment ID:--->')
                             name1 = 'Formative Assessment'
                             name2 = 'Summative Assessment'
                             name3 = 'Diagnostic Assessment'
@@ -626,17 +617,17 @@ while True:
     Type Here:--->''')
                             if assessment_type == '1':
                                 comp_id = input('Type a Competency ID to change Competency for the Assessment:--->')
-                                edit_an_assessment(comp_id, name1)
+                                edit_an_assessment(comp_id, name1,assessment_id)
                             elif assessment_type == '2':
                                 comp_id = input('Type a Competency ID to change Competency for the Assessment:--->')
-                                edit_an_assessment(comp_id, name2)
+                                edit_an_assessment(comp_id, name2,assessment_id)
                             elif assessment_type == '3':
                                 comp_id = input('Type a Competency ID to change Competency for the Assessment:--->')
-                                edit_an_assessment(comp_id, name3)
+                                edit_an_assessment(comp_id, name3,assessment_id)
                             elif assessment_type == '4':
                                 comp_id = input('Type a Competency ID to change Competency for the Assessment:--->')
                                 name4 = input('Type your Assessment Type here:---> ')
-                                edit_an_assessment(comp_id, name4)
+                                edit_an_assessment(comp_id, name4,assessment_id)
 
                         elif user_input4 == '4':
                             read_assessment_results()
@@ -678,9 +669,9 @@ while True:
                         elif user_input5 == '4':
                             query1 = 'SELECT * FROM Users WHERE active = 0;'
                             rows = cursor.execute(query1).fetchall()
-                            print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["password"]:20}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
+                            print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
                             for row in rows:
-                                print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[5]:20}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
+                                print(f'{row[0]:<10}{row[1]:15}{row[2]:15}{row[3]:15}{row[4]:35}{row[6]:25}{row[7]:25}{row[8]:12}{row[9]:<15}')
                                 print()
                             user_id = input('Type User ID to select Person to Activate:--->')
                             activate_a_user(user_id)
