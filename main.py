@@ -188,9 +188,10 @@ def view_a_competency_level_for_an_individual_user(user_id, assessment_id): #for
 
     rows = cursor.execute(query, (assessment_id, user_id))
     scores_list = []
+
     for row in rows:
         scores_list.append({"user_id":row[1], "comp_id": row[6], "score": row[3]})
-
+    print(scores_list)
     with open('competencies.csv','wt') as my_csv:
         wrt = csv.writer(my_csv)
         wrt.writerow(['user_id','comp_id','score'])
@@ -269,11 +270,20 @@ def add_an_assessment_result_for_a_user_for_an_assessment(user_id, assessment_id
 
 
 def edit_a_users_information(changed_items,user_input1):
-    hashed_password = hash_pw(changed_items[5])
-    query3 = 'UPDATE Users SET first_name = ?, last_name = ?, phone = ?, email = ?, user_type = ?, password = ?  WHERE user_id = ? AND active = 1;'
-    cursor.execute(query3, (changed_items[0],changed_items[1],changed_items[2],changed_items[3],changed_items[4],hashed_password,user_input1))
-    #input('Press enter to finish adding submission: ')
-    connection.commit() 
+    print(changed_items[5])
+    if changed_items[5] == '':
+        query3 = 'UPDATE Users SET first_name = ?, last_name = ?, phone = ?, email = ?, user_type = ? WHERE user_id = ? AND active = 1;'
+        cursor.execute(query3, (changed_items[0],changed_items[1],changed_items[2],changed_items[3],changed_items[4],user_input1))
+        #input('Press enter to finish adding submission: ')
+        connection.commit() 
+    else:
+        hashed_password = hash_pw(changed_items[5])
+        query3 = 'UPDATE Users SET first_name = ?, last_name = ?, phone = ?, email = ?, user_type = ?, password = ?  WHERE user_id = ? AND active = 1;'
+        cursor.execute(query3, (changed_items[0],changed_items[1],changed_items[2],changed_items[3],changed_items[4],hashed_password,user_input1))
+        #input('Press enter to finish adding submission: ')
+        connection.commit() 
+
+
     
 def edit_a_competency(changed_comp_items,comp_id_input):
     query = 'UPDATE Competencies SET name = ? WHERE competency_id = ? AND active = 1;'
@@ -380,7 +390,7 @@ while True:
         user_id = str(row[2])
         # result = cursor.execute(query, (user_id,)).fetchone()
         check_password = check_pw(password, row[0])
-        print(check_password)
+        #print(check_password)
         if row[1] == 'Manager' and check_password == True:
             while True:
                 user_input2 = input('''
@@ -572,8 +582,11 @@ while True:
                             print(changed_items)
                             for new_item in changed_items:
                                 if new_item == '':
-                                    changed_items[index] = existing_user[index]
-                                    index += 1
+                                    if index == 5:
+                                        changed_items[index] = ''
+                                    else:
+                                        changed_items[index] = existing_user[index]
+                                        index += 1
                                 else:
                                     index += 1
                             edit_a_users_information(changed_items,user_input1)
@@ -646,27 +659,21 @@ while True:
                 elif user_input2 == '8':
                     while True:
                         user_input5 = input('''
-    1.) Deactivate an Assessment result
-    2.) Activate an Assessment result
-    3.) Deactivate a User
-    4.) Activate a User
-    5.) Deactivate a Competency
-    6.) Activate a Competency
-    7.) Deactivate an Assessment
-    8.) Activate an Assessment
-    9.) Back to Menu
+    1.) Deactivate a User
+    2.) Activate a User
+    3.) Deactivate a Competency
+    4.) Activate a Competency
+    5.) Deactivate an Assessment
+    6.) Activate an Assessment
+    7.) Back to Menu
     
     Type number here:--->''')
-                        if user_input5 == '1':
-                            deactivate_an_assessment_result()
-                        elif user_input5 == '2':
-                            activate_an_assessment_result()
 
-                        elif user_input5 == '3':
+                        if user_input5 == '1':
                             view_all_users_in_a_list()
                             user_id = input('Type User ID to select Person to Deactivate:--->')
                             deactivate_a_user(user_id)
-                        elif user_input5 == '4':
+                        elif user_input5 == '2':
                             query1 = 'SELECT * FROM Users WHERE active = 0;'
                             rows = cursor.execute(query1).fetchall()
                             print(f'{user_dictionary["user_id"]:10}{user_dictionary["first_name"]:15}{user_dictionary["last_name"]:15}{user_dictionary["phone"]:15}{user_dictionary["email"]:35}{user_dictionary["date_created"]:25}{user_dictionary["hire_date"]:25}{user_dictionary["user_type"]:12}{user_dictionary["active"]:15}')
@@ -676,7 +683,7 @@ while True:
                             user_id = input('Type User ID to select Person to Activate:--->')
                             activate_a_user(user_id)
 
-                        elif user_input5 == '5':
+                        elif user_input5 == '3':
                             query1 = 'SELECT * FROM Competencies WHERE active = 1;'
                             rows = cursor.execute(query1).fetchall()
                             print(f'{competency_dictionary["competency_id"]:<15}{competency_dictionary["name"]:30}{competency_dictionary["date_created"]:30}{competency_dictionary["active"]:15}\n')
@@ -684,7 +691,7 @@ while True:
                                 print(f'{row[0]:<15}{row[1]:30}{row[2]:30}{row[3]:<15}')
                             comp_id = input('Type Copmetency ID to select Competency to Deactivate:--->')
                             deactivate_a_competency(comp_id)
-                        elif user_input5 == '6':
+                        elif user_input5 == '4':
                             query1 = 'SELECT * FROM Competencies WHERE active = 0;'
                             rows = cursor.execute(query1).fetchall()
                             print(f'{competency_dictionary["competency_id"]:<15}{competency_dictionary["name"]:30}{competency_dictionary["date_created"]:30}{competency_dictionary["active"]:15}\n')
@@ -693,7 +700,7 @@ while True:
                             comp_id = input('Type Copmetency ID to select Competency to Activate:--->')
                             activate_a_competency(comp_id)
 
-                        elif user_input5 == '7':
+                        elif user_input5 == '5':
                             query = 'SELECT * FROM Assessments WHERE active = 1;'
                             rows = cursor.execute(query).fetchall()
                             print(f'{assessment_dictionary["assessment_id"]:<15}{assessment_dictionary["competency_id"]:15}{assessment_dictionary["name"]:30}{assessment_dictionary["active"]:<15}')
@@ -702,7 +709,7 @@ while True:
                             assessment_id = input('Type an Assessment ID to select Assessment to Deactivate:--->')
                             deactivate_an_assessment(assessment_id)
 
-                        elif user_input5 == '8':
+                        elif user_input5 == '6':
                             query = 'SELECT * FROM Assessments WHERE active = 0;'
                             rows = cursor.execute(query).fetchall()
                             print(f'{assessment_dictionary["assessment_id"]:<15}{assessment_dictionary["competency_id"]:15}{assessment_dictionary["name"]:30}{assessment_dictionary["active"]:<15}')
@@ -711,8 +718,12 @@ while True:
                             assessment_id = input('Type an Assessment ID to select Assessment to Deactivate:--->')
                             activate_an_assessment(assessment_id)
                             
-                        elif user_input5 == '9':
+                        elif user_input5 == '7':
                             break
+                        # if user_input5 == '1':
+                        #     deactivate_an_assessment_result()
+                        # elif user_input5 == '2':
+                        #     activate_an_assessment_result()
                 elif user_input2 == '9':
                     while True:
                         admin_input = input('1.) Restore Competencies\n2.) Restore Users\n3.) Restore Assessments\n4.) Restore Assessment Results\n5.) Return to Main Menu\nType here:--->')
